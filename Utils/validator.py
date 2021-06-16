@@ -2,7 +2,7 @@ import sys
 import os
 import re
 import enchant
-from utils import NON_ALPHABET
+from .utils import NON_ALPHABET
 
 class Validator:
 

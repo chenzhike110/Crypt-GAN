@@ -2,9 +2,9 @@ import PyQt5
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QMessageBox, QComboBox, QTextEdit
 # from lib.utils import *
-from lib import utils
+from Utils import utils
 # from lib.validator import *
-from tools import caesar
+from Caesar import caesar
 
 class Encoder(QWidget):
 

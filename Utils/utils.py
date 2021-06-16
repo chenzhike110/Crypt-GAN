@@ -127,10 +127,6 @@ def find_sequence_duplicates(text, min_length=3):
     lengths = [[0] * i for i in range(sizeAlpha)]
 
     for i in range(1, sizeAlpha):
-        if args.verbose:
-            sys.stdout.write("\r")
-            sys.stdout.write(f"{round(100 * (i/(sizeAlpha- 1)))}% ")
-            sys.stdout.flush()
         for j in range(1, i):
             if text[i - 1] == text[j - 1]:
                 duplicate_length = lengths[i][j] = lengths[i - 1][j - 1] + 1
@@ -140,6 +136,4 @@ def find_sequence_duplicates(text, min_length=3):
                     if duplication not in seqSpacings:
                         seqSpacings[duplication] = []
                     seqSpacings[duplication].append(spacing)
-    if args.verbose:
-        print()
     return seqSpacings
