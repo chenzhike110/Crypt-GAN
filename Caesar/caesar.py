@@ -1,6 +1,3 @@
-#!/usr/bin/python3.6
-# -*- coding: utf-8 -*-
-
 from Utils import utils, validator
 
 def caesar(text, shift):
