@@ -1,7 +1,7 @@
 import torch
 from . import net as ad
 
-LOAD_PATH = "./adversarial_neural_cryptography_model_and_optimizer"
+LOAD_PATH = "GAN/adversarial_neural_cryptography_model_and_optimizer"
 
 def random_generate_ptext_and_key(ptext_size, key_size):
     """
