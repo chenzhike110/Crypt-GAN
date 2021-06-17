@@ -12,7 +12,7 @@ MODULE = len(ALPHABET)
 MAX_SCORE = (MODULE - 1)*MODULE
 ENGLISH_IC = 0.067
 MIN_ENGLISH_IC = 1/MODULE
-FAILED = (None, 'Failed')
+FAILED = (None, None)
 
 def memoize(f):
     class memodict(dict):
@@ -105,6 +105,8 @@ def coincidence_index(text, frequencies=None):
     size = len(text)
     freq_sum = reduce(lambda x, y: x + y, map(lambda freq: freq[1]*(freq[1] - 1), frequencies))
     size_mult = size * (size - 1)
+    if size_mult == 0:
+        return 1
     return freq_sum / size_mult
 
 def distance(char, target_index, alphabet):

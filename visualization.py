@@ -1,14 +1,14 @@
-import PyQt5
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QMessageBox, QComboBox, QTextEdit
-# from lib.utils import *
 from Utils import utils
-# from lib.validator import *
 from Caesar import caesar
+from Vigenere import vigenere
+from Scytale import scytale
+import math
 
 class Encoder(QWidget):
 
-    restarted = pyqtSignal(str, str, int)
+    restarted = pyqtSignal(str, str, str)
     crake_start = pyqtSignal(str, str)
 
     def __init__(self, Decoder, Craker, *args, **kwargs):
@@ -39,14 +39,22 @@ class Encoder(QWidget):
         txt = self.dirEdit.text()
         txt = utils.read(txt)
         key = self.keyvalue.text()
-        try:
-            key = int(key)
-        except:
-            key = 10
         if self.method.currentIndex() == 0:
-            txt = caesar.caesar(txt, key)
+            try:
+                key = str(int(key))
+            except:
+                key = '10'
+            txt = caesar.caesar(txt, int(key))
+        if self.method.currentIndex() == 3:
+            txt = vigenere.vigenere(txt, key, False)
+        if self.method.currentIndex() == 2:
+            try:
+                key = str(int(key))
+            except:
+                key = '10'
+            txt = scytale.cipher(txt, int(key), None)
         QMessageBox.information(self, "密文", "{0}".format(txt)) == QMessageBox.Yes
-        print("decode!!")
+        print("decode!!", key, self.method.currentIndex())
         self.restarted.emit(txt, self.method.currentText(), key)
         self.crake_start.emit(txt, self.method.currentText())
 
@@ -67,7 +75,13 @@ class Decoder(QWidget):
         self.resultEdit.append('Method: '+method)
         self.resultEdit.append('Key: {0}'.format(key))
         self.resultEdit.append('Cyphertext: '+txt)
-        result = caesar.caesar(txt, 26-key)
+        if method == "Caesar":
+            key = int(key)
+            result = caesar.caesar(txt, 26-key)
+        if method == "Vigenere":
+            result = vigenere.vigenere(txt, key, True)
+        if method == 'Scytale':
+            result = scytale.cipher(txt,math.ceil(len(txt)/int(key)),self.resultEdit) 
         self.resultEdit.append('Result: '+result)
         self.resultEdit.append(' ')
     
@@ -87,9 +101,27 @@ class Listener(QWidget):
         self.resultEdit.append('start crack ...')
         self.resultEdit.append('Method: '+method)
         self.resultEdit.append('Cyphertext: '+txt)
-        key, result = caesar.crack(txt)
-        self.resultEdit.append('Result: '+result)
         self.resultEdit.append(' ')
+        if method == "Caesar":
+            key, result = caesar.crack(txt, self.resultEdit)
+            if result == None:
+                result = "Failed"
+            self.resultEdit.append('Result: '+result)
+            self.resultEdit.append(' ')
+        if method == "Vigenere":
+            result = vigenere.crack(txt, self.resultEdit)
+            print(result)
+            if result != None:
+                self.resultEdit.append('Try key: '+result[0])
+                self.resultEdit.append('Get result: '+result[1])
+                self.resultEdit.append(' ')
+        if method == "Scytale":
+            result = scytale.crack(txt, self.resultEdit)
+            if result != None:
+                self.resultEdit.append('Try key: '+ ''.join([str(i) for i in result[0]]))
+                self.resultEdit.append('Get result: '+result[1])
+                self.resultEdit.append(' ')
+        
 
 if __name__ == "__main__":
     import sys

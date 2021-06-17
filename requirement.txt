@@ -1,0 +1,6 @@
+PyQt5
+torch
+numpy
+matplotlib
+pyenchant
+Crypto
