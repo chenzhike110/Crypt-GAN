@@ -17,3 +17,8 @@
 - Listener known algorithm without key 
 
 ![windows](./image/windows.png)
+
+#### Run the code 
+pip3 install --upgrade pip
+pip3 install -r requirement.txt
+python3 visualization.py
